@@ -1,0 +1,49 @@
+package other
+
+/*
+ #cgo CFLAGS: -x objective-c
+ #cgo LDFLAGS: -framework Cocoa
+ #import <Foundation/Foundation.h>
+ #import <ApplicationServices/ApplicationServices.h>
+ CGEventRef CreateDown(int k){
+	CGEventRef event = CGEventCreateKeyboardEvent (NULL, (CGKeyCode)k, true);
+	return event;
+ }
+ CGEventRef CreateUp(int k){
+	CGEventRef event = CGEventCreateKeyboardEvent (NULL, (CGKeyCode)k, false);
+	return event;
+ }
+ void KeyTap(CGEventRef event){
+	CGEventPost(kCGAnnotatedSessionEventTap, event);
+	CFRelease(event);
+ }
+ void AddActionKey(CGEventFlags type,CGEventRef event){
+ 	CGEventSetFlags(event, type);
+ }
+*/
+import "C"
+
+import (
+	"log"
+	"time"
+)
+
+func getKey(keyId uint, down bool) uint {
+	var result uint
+	if down {
+        result = (keyId << 16) | (0xa << 8)
+    } else {
+        result = (keyId << 16) | (0xb << 8)
+    }
+    log.Default().Printf("Result: 0x%x\n", result)
+    log.Default().Printf("Result: %d\n", result)
+	return result
+}
+
+func PressKey(keyId uint) {
+	downEvent := C.CreateDown(C.int(getKey(keyId, false)))
+	C.KeyTap(downEvent)
+	time.Sleep(100 * time.Millisecond)
+	upEvent := C.CreateUp(C.int(getKey(keyId, true)))
+	C.KeyTap(upEvent)
+}

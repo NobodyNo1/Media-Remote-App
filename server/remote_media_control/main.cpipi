@@ -1,0 +1,42 @@
+#include <CoreGraphics/CoreGraphics.h>
+#include <CoreFoundation/CoreFoundation.h>
+
+#define NX_KEYTYPE_PLAY 16
+
+void pressAuxiliaryKey(int keyType) {
+    CGEventRef keyDownEvent = CGEventCreateKeyboardEvent(NULL, (CGKeyCode)keyType, true);
+    CGEventRef keyUpEvent = CGEventCreateKeyboardEvent(NULL, (CGKeyCode)keyType, false);
+
+    // Set the flags for the key events (e.g., Control or Command key)
+    CGEventSetFlags(keyDownEvent, kCGEventFlagMaskCommand); // Example: Command key
+    CGEventSetFlags(keyUpEvent, kCGEventFlagMaskCommand);   // Example: Command key
+
+    // Post the key events
+    CGEventPost(kCGHIDEventTap, keyDownEvent);
+    CGEventPost(kCGHIDEventTap, keyUpEvent);
+
+    CFRelease(keyDownEvent);
+    CFRelease(keyUpEvent);
+}
+
+void testKey(){
+    CGKeyCode inputKeyCode = 16;
+    CGEventSourceRef source = CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+    CGEventRef saveCommandDown = CGEventCreateKeyboardEvent(source, inputKeyCode, true);
+    CGEventSetFlags(saveCommandDown, kCGEventFlagMaskCommand);
+    CGEventRef saveCommandUp = CGEventCreateKeyboardEvent(source, inputKeyCode, false);
+
+    CGEventPost(kCGAnnotatedSessionEventTap, saveCommandDown);
+    CGEventPost(kCGAnnotatedSessionEventTap, saveCommandUp);
+
+    CFRelease(saveCommandUp);
+    CFRelease(saveCommandDown);
+    CFRelease(source);
+}
+
+int main() {
+    // Call pressAuxiliaryKey with the desired key code (e.g., NX_KEYTYPE_PLAY)
+    pressAuxiliaryKey(NX_KEYTYPE_PLAY);
+
+    return 0;
+}
