@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expandable List</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+    <div class="max-w-lg mx-auto">
+        <ul class="space-y-2">
+            <li>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 mr-2">
+                        <button class="text-gray-500 focus:outline-none focus:text-gray-700">+</button>
+                    </div>
+                    Item 1
+                </div>
+                <ul class="pl-6 space-y-2 hidden">
+                    <li>Subitem 1.1</li>
+                    <li>Subitem 1.2</li>
+                </ul>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 mr-2">
+                        <button class="text-gray-500 focus:outline-none focus:text-gray-700">+</button>
+                    </div>
+                    Item 2
+                </div>
+                <ul class="pl-6 space-y-2 hidden">
+                    <li>Subitem 2.1</li>
+                    <li>Subitem 2.2</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const buttons = document.querySelectorAll("button");
+        buttons.forEach(button => {
+            button.addEventListener("click", () => {
+                const sublist = button.nextElementSibling;
+                sublist.classList.toggle("hidden");
+                button.textContent = sublist.classList.contains("hidden") ? "+" : "-";
+            });
+        });
+    </script>
+</body>
+</html>

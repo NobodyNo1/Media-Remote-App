@@ -1,19 +1,18 @@
-package main
+package media
 
 import (
-	"log"
 	"os"
 	"os/exec"
 )
 
-func playPause() {
-	pressAuxKey()
+func PlayPause() error {
+	return pressAuxKey()
 }
 
 //todo: Make it configurable
-func pressAuxKey() {
+func pressAuxKey() error {
 	// Command to run the Python script
-	cmd := exec.Command("aux_control", "test.py")
+	cmd := exec.Command("python", "aux_control.py")
 
 	// Set the working directory if needed
 	// cmd.Dir = "/path/to/your/python/script"
@@ -23,9 +22,5 @@ func pressAuxKey() {
 	cmd.Stderr = os.Stderr
 
 	// Run the command
-	err := cmd.Run()
-	if err != nil {
-		log.Default().Printf("Error: %v\n", err)
-		return
-	}
+	return cmd.Run()
 }

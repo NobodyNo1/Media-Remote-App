@@ -1,4 +1,4 @@
-module remote_media_control/main
+module remote_media_control
 
 go 1.20
 

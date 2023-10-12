@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple htmx and Tailwind CSS Example</title>
+    <script src="https://cdn.tailwindcss.com"></script> 
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+</head>
+<body> 
+    <div class="container mx-auto mt-5 text-center">
+        <h1 class="text-2xl font-bold mb-4">Simple htmx and Tailwind CSS Example</h1>
+        <button hx-get="/api/some-data" hx-trigger="click" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Load Data</button>
+    <div id="data-container" class="mt-4"></div>
+
+    <div class="container mx-auto mt-5 text-center">
+        <h1 class="mb-4">Command Log</h1>
+        <ul class="list-group fs-5 me-5" id="command-log">
+            {{ range .Commands }}
+                {{ block "command-item" .}}
+                    <li class="bg-gray-700 text-white p-4 mb-4 rounded-md">
+                        <div class="flex items-start space-x-2">
+                            <div class="text-lg">{{ . }}</div>
+                        </div>
+                    </li>
+                {{ end }}
+            {{ end }}
+        </ul>
+    </div>
+</div>
+</body>
+</html>
