@@ -12,9 +12,18 @@ Simple Server-Client App that allows you to use media control (or keys) remotell
 
 ## How
 
+
+![Overview-mermaid](/docs/screenshots/mermaid_brief_overview.png)
+
+
 ### Client
 
 Noting special just UI that send api calls.
+
+| ios | android |
+|-----|---------|
+| <img src="docs/screenshots/ios_screenshot.png" alt="iOS" width="180"/> | <img src="docs/screenshots/android_screenshot.jpg" alt="android" width="180"/> |
+
 #### Implmented
 
 - In Kotlin multiplatform
@@ -22,26 +31,40 @@ Noting special just UI that send api calls.
 ### Server
 
 - Volume 
-Checks using volume-go #expanation
+Checks using volume-go 
+    - For macOS uses apple scripts to fetch and update volume
 
 - Media Keys
 
-Windows/Linux: Simulation of keyboard presses
-Mac: Simulates AUX keys (like in wired headphone)
+    - Windows/Linux   : Simulation of keyboard presses
+    - Mac             : Simulates AUX keys (similar to wired headphone)
+
+#### TODO
+
+- Client
+    - [ ] UI enchancement
+    - [ ] Tests
+- Docs
+    - [ ] Dependencies list
+- Server
+    - [ ] Better and Convient logging
+
 
 #### Tested/Developed on
 
 MacBook Pro 2019 (touchbar)
 
-#### Possible to explore
+#### Didn't work out
 
-- Media keys on Mac (F8)
-Doesn't worked assume because of Touchbar
+- Using keyboard "Media keys" on Mac (F8)
+Doesn't worked assume because of Touchbar, also might be application specific
+
+#### Possible to explore
 
 - Using bluetooth canal
 Using AVRCP (if used probably could be used for excange server IP?)
 
-- Pushes for syncing IP?
+- Using Pushes for syncing IP?
 
 - Static Domain for IP
 
@@ -50,17 +73,7 @@ Using AVRCP (if used probably could be used for excange server IP?)
 - "Go to sleep mode" command
 
 - Rewrite server logic in C
-Will look fun
 
-Android (Kotlin) \                         [Desktop as Server]           ?
-                  |->  Mobile logic (KMP) - > Server (GO) -> Logic (C)
-iOS     (Swift)  /                     [OR]      ^              \-> macOS (swift) 
-                                        \        |
-                       Front (htmx)  - - \       |
-                                          \      |
-                       Arduino (C) - - - - \     |
-                                            v    |
-         (FULL REMOTE) Desktop (GO) <= = =>  Server (GO)
 
 # Future
 

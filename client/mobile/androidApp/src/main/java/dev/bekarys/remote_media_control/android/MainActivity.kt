@@ -21,14 +21,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.bekarys.remote_media_control.Greeting
+import dev.bekarys.remote_media_control.android.screens.home.ControlView
+import dev.bekarys.remote_media_control.android.screens.home.HomeScreen
 import dev.bekarys.remote_media_control.domain.RemoteMediaController
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-
-    private val mainScope = MainScope()
-    private val controller = RemoteMediaController()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,115 +37,18 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ControlView(Greeting().greet())
+                    HomeScreen()
                 }
             }
         }
     }
+}
 
-    @Composable
-    fun ControlView(
-        text: String,
-    ) {
-        val isLoading = remember {
-            mutableStateOf(false)
-        }
-        val failState = remember {
-            mutableStateOf(Pair(false, ""))
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(),
-            verticalArrangement = Arrangement.Center
-        ) {
-            if(failState.value.first){
-                //show error
-//            failState.value = Pair(false, "")
-                Text("FAILED: ${failState.value.second}", color = Color.Red)
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = text)
-            if (isLoading.value)
-                CircularProgressIndicator()
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                MyTextButton("Decrease") {
-                    updateVolume(false, {
-                        isLoading.value = it
-                    }, {
-                        isLoading.value = false
-                        failState.value = Pair(true, it)
-                    })
-                }
-                MyTextButton("Increase") {
-                    updateVolume(true, {
-                        isLoading.value = it
-                    }, {
-                        isLoading.value = false
-                        failState.value = Pair(true, it)
-                    })
-                }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            MyTextButton(text = "Play/Pause") {
-                playPause({
-                    isLoading.value = it
-                }, {
-                    isLoading.value = false
-                    failState.value = Pair(true, it)
-                })
-            }
-        }
+
+@Preview
+@Composable
+fun DefaultPreview() {
+    MyApplicationTheme {
+        HomeScreen()
     }
-
-    private fun playPause(onStateChange: (Boolean) -> Unit, onFail: (String) -> Unit) {
-        mainScope.launch {
-            kotlin.runCatching {
-                controller.playPause()
-            }.onSuccess {
-                onStateChange(false)
-            }.onFailure {
-                onFail("Failed: ${it.localizedMessage}")
-            }
-            onStateChange(true)
-        }
-    }
-
-    // TODO: Show state
-    private fun updateVolume(
-        isIncrease: Boolean,
-        onStateChange: (Boolean) -> Unit,
-        onFail: (String) -> Unit
-    ) {
-        mainScope.launch {
-            kotlin.runCatching {
-                controller.updateVolume(isIncrease)
-            }.onSuccess {
-                onStateChange(false)
-            }.onFailure {
-                onFail("Failed: ${it.localizedMessage}")
-            }
-            onStateChange(true)
-        }
-    }
-
-    @Composable
-    fun MyTextButton(text: String, onClick: () -> Unit) {
-        Button(onClick = onClick) {
-            Text(text)
-        }
-    }
-
-    @Preview
-    @Composable
-    fun DefaultPreview() {
-        MyApplicationTheme {
-            ControlView("Preview")
-        }
-    }
-
 }

@@ -3,29 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple htmx and Tailwind CSS Example</title>
+    <title>Media Remote Control</title>
     <script src="https://cdn.tailwindcss.com"></script> 
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
 </head>
 <body> 
-    <div class="container mx-auto mt-5 text-center">
-        <h1 class="text-2xl font-bold mb-4">Simple htmx and Tailwind CSS Example</h1>
-        <button hx-get="/api/some-data" hx-trigger="click" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Load Data</button>
-    <div id="data-container" class="mt-4"></div>
+    <div class="container mx-auto mt-5 text-left">
+        <h1 class="text-3xl font-bold mb-4">Media Remote Control</h1>
+        <!-- <button hx-get="/api/some-data" hx-trigger="click"
+        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Load Data</button> -->
+        
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+       
+        <!-- CONTORLS-->
+        <div class="container mx-auto mt-5 text-center grid grid-cols-1 gap-4" >
 
-    <div class="container mx-auto mt-5 text-center">
-        <h1 class="mb-4">Command Log</h1>
-        <ul class="list-group fs-5 me-5" id="command-log">
-            {{ range .Commands }}
-                {{ block "command-item" .}}
-                    <li class="bg-gray-700 text-white p-4 mb-4 rounded-md">
-                        <div class="flex items-start space-x-2">
-                            <div class="text-lg">{{ . }}</div>
-                        </div>
-                    </li>
+            <h2 class="text-2xl font-bold mb-4">Controls</h2>
+            <button
+            hx-get="/api/key?event=playPause"
+            hx-trigger="click"
+            class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                Play/Pause
+            </button>
+
+            <div class="grid grid-cols-2 gap-4">
+                <button
+                    hx-get="/api/volume?status=decrease"
+                    hx-trigger="click"
+                    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                    Decrease
+                </button>
+                <button
+                    hx-get="/api/volume?status=increase"
+                    hx-trigger="click"
+                    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                    Increase
+                </button>
+            </div>
+            
+        </div>
+        
+
+        <div class="container mx-auto mt-5 text-center">
+            <h2 class="text-2xl font-bold mb-4">Command Log</h2>
+            <ul class="list-group fs-5 me-5" id="command-log">
+                {{ range .Commands }}
+                    {{ block "command-item" .}}
+                        <li class="bg-gray-700 text-white p-4 mb-4 rounded-md">
+                            <div class="flex items-start space-x-2">
+                                <div class="whitespace-pre-line text-lg">{{ . }}</div>
+                            </div>
+                        </li>
+                    {{ end }}
                 {{ end }}
-            {{ end }}
-        </ul>
+            </ul>
+        </div>
     </div>
 </div>
 </body>

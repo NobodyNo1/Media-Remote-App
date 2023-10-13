@@ -11,22 +11,39 @@ import (
 	"strings"
 )
 
-func commandToMessage(command CommandLog) string {
+func commandToMessage(command CommandLog, short bool) string {
+	if(short){
+		// TODO: spacing is not kept in the html (tailwind)
+		return fmt.Sprintf(
+			"%-10s %-10s | %v",
+			fmt.Sprintf(
+				"[%s]",
+				strings.ToUpper(string(command.LogStatus)),
+			),
+			command.Name,
+			command.Param,
+		)
+	}
 	return fmt.Sprintf(
 		"id: %d, name: %s, param: %s, status: %s, occuredAt: %s ",
-		command.ID, command.Name, command.Param, command.Status, command.OccuredAt,
+		command.ID, command.Name, command.Param, command.LogStatus, command.OccuredAt,
 	)
 }
 
-func getLogMessages() map[string][]string {
+func getLogMessages(onlyFinalStatuses bool, short bool) map[string][]string {
 	commandChain := GetCommandChain()
 	result := make([]string, len(commandChain))
-	for idX, chain := range commandChain{
+	for idX, chain := range commandChain {
 		var messageBuilder strings.Builder
-		for j, item := range chain {
-			messageBuilder.WriteString(commandToMessage(item))
-			if j != len(chain) - 1 {
-				messageBuilder.WriteString("\n")
+		
+		if(onlyFinalStatuses) {
+			messageBuilder.WriteString(commandToMessage(chain[len(chain)-1],short))
+		} else {
+			for j, item := range chain {
+				messageBuilder.WriteString(commandToMessage(item,short))
+				if j != len(chain) - 1 {
+					messageBuilder.WriteString("\n")
+				}
 			}
 		}
 		result[idX] = messageBuilder.String()
@@ -38,8 +55,12 @@ func getLogMessages() map[string][]string {
 }
 
 func HandlerHome(w http.ResponseWriter, r *http.Request) {
-	tmplt := template.Must(template.ParseFiles("router/pages/home/index2.html"))
-	tmplt.Execute(w, getLogMessages())
+	tmplt := template.Must(template.ParseFiles("router/pages/home/index.html"))
+	logs := getLogMessages(true, true)
+	for _,i := range logs {
+		log.Default().Print(i)
+	}
+	tmplt.Execute(w, logs)
 }
 
 func HandlerVolumeHtmx(w http.ResponseWriter, r *http.Request, increase bool) {

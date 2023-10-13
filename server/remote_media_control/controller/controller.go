@@ -110,7 +110,7 @@ func MediaKeyPress(key MediaKey) error  {
 		logChain = append(
 			logChain,
 			CreateChainLogCommandF(
-				"volume",
+				process,
 				Fail,
 				key,
 				"can't get updated volume %v", 
@@ -121,7 +121,7 @@ func MediaKeyPress(key MediaKey) error  {
 		logChain = append(
 			logChain,
 			CreateChainLogCommand(
-				"volume",
+				process,
 				Success,
 				key,
 				"",

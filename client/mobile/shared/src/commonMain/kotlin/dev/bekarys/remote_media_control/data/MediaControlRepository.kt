@@ -50,8 +50,7 @@ object MediaControlRepository {
         val ipAddress = "192.168.0.231"
         val port = "8000"
         val stringBuilder = StringBuilder()
-        stringBuilder.append("http://")
-        stringBuilder.append(ipAddress).append(':').append(port).append("/")
+        stringBuilder.append("http://", ipAddress, ":", port, "/api/")
         stringBuilder.append(command).append("?")
         var isFirst = true
         query.forEach {

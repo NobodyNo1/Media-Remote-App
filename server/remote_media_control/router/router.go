@@ -9,7 +9,7 @@ import (
 )
 
 var keyMap = map[string]MediaKey {
-	"pausePlay": PlayPause,
+	"playPause": PlayPause,
 	"forward":   Forward,
 	"backward":  Backward,
 }
@@ -34,7 +34,7 @@ func SetupRouter() {
 		ParamName: "status",
 		Values: map[string]bool{
 			"increase": true,
-			"descrease": false,
+			"decrease": false,
 		},
 	}.Create(
 		HandlerVolumeApi,

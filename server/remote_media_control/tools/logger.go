@@ -14,10 +14,11 @@ const (
 )
 
 type CommandLog struct {
+	//TODO: FROM
 	ID int
 	Name string
 	Param any
-	Status Status
+	LogStatus Status
 	OccuredAt time.Time
 }
 
@@ -45,7 +46,7 @@ func CreateLogCommand(id int, name string, status Status, param any, message str
 		ID: id,
 		Name: name,
 		Param: param,
-		Status: status,
+		LogStatus: status,
 		OccuredAt: time.Now(),
 	}
 }

@@ -1,8 +1,9 @@
 package api
 
 import (
-	"net/http"
 	"encoding/json"
+	"log"
+	"net/http"
 	. "remote_media_control/controller"
 	. "remote_media_control/data/model"
 )
@@ -66,6 +67,7 @@ func HandlerMediaKeysApi(
 	r *http.Request,
 	mediaKey MediaKey,
 ) {
+	log.Default().Print("PIPI")
 	err:= MediaKeyPress(mediaKey)
 	if err != nil {
 		resp:=createFailResponse(err.Error())

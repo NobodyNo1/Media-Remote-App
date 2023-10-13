@@ -1,0 +1,23 @@
+graph LR
+subgraph Web
+end
+
+subgraph Mobile
+Android
+iOS
+Shared
+end
+
+
+subgraph Desktop as Server
+RestApi
+OS
+end
+
+
+Android --> Shared
+iOS     --> Shared
+
+Web        -->|HTMX| RestApi
+Shared     -->|Ktor| RestApi
+RestApi    -->|Media Control| OS
